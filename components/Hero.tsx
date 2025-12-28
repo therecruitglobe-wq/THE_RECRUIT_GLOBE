@@ -48,14 +48,14 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         
         <div className="mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <a
-            href="#jobs"
-            onClick={(e) => handleScrollClick(e, 'jobs')}
+            href="#job-seeker-services"
+            onClick={(e) => handleScrollClick(e, 'job-seeker-services')}
             className="bg-brand-gold hover:bg-opacity-90 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
           >
             Find Your Next Role
           </a>
           <button
-            onClick={() => onNavigate('partnerPage')}
+            onClick={() => onNavigate('hiringForm')}
             className="bg-transparent border-2 border-white hover:bg-white hover:text-brand-dark text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
           >
             Hire Top Talent

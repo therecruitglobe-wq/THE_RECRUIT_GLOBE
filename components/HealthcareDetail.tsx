@@ -12,22 +12,22 @@ const roles = [
     {
         title: "Doctors & Physicians",
         description: "Connecting you with specialists, general practitioners, surgeons, and hospitalists.",
-        imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766909091/doctors_and_physicians_nymesx.jpg"
     },
     {
         title: "Nurses & Practitioners",
         description: "Sourcing Registered Nurses (RNs), Nurse Practitioners (NPs), and Clinical Nurse Specialists.",
-        imageUrl: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1920&auto=format=fit=crop"
     },
     {
         title: "Allied Health Professionals",
         description: "Recruiting for roles like Physiotherapists, Occupational Therapists, and Radiographers.",
-        imageUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766909418/allied_eqvbq7.webp"
     },
     {
         title: "Medical Technicians",
         description: "Finding skilled Lab Technicians, Pharmacy Technicians, and Surgical Technologists.",
-        imageUrl: "https://images.unsplash.com/photo-1581093583449-8393e3948ab2?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766909655/medical_technican_pqjsek.webp"
     }
 ];
 
@@ -86,7 +86,7 @@ const HealthcareDetail: React.FC<HealthcareDetailProps> = ({ onBack, onDiscussSt
             </div>
             <div className="lg:w-1/3">
                 <img 
-                    src="https://images.unsplash.com/photo-1551192018-9d62d30f3630?q=80&w=1920&auto=format&fit=crop" 
+                    src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766909994/corridor_c0b0n5.jpg" 
                     alt="A modern and clean hospital corridor" 
                     className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
                 />

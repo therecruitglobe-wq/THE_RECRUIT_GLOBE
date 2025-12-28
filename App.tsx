@@ -36,8 +36,11 @@ import { jobs } from './data/jobs';
 import ContactPage from './components/ContactPage';
 import AboutPage from './components/AboutPage';
 import PartnerPage from './components/PartnerPage';
+import CareerStrategyEnquiryForm from './components/CareerStrategyEnquiryForm';
+import JobSeekerForm from './components/JobSeekerForm';
+import JobOpeningsPage from './components/JobOpeningsPage';
 
-type View = 'main' | 'hiringForm' | 'healthcareDetail' | 'oilAndGasDetail' | 'constructionDetail' | 'itDetail' | 'manufacturingDetail' | 'miningDetail' | 'middleEastDetail' | 'africaDetail' | 'europeDetail' | 'indiaDetail' | 'cvOptimizationDetail' | 'linkedInOptimizationDetail' | 'careerStrategyDetail' | 'interviewPrepDetail' | 'jobSearchEnablementDetail' | 'jobDetailAndApply' | 'industriesPage' | 'contactPage' | 'aboutPage' | 'partnerPage';
+type View = 'main' | 'hiringForm' | 'healthcareDetail' | 'oilAndGasDetail' | 'constructionDetail' | 'itDetail' | 'manufacturingDetail' | 'miningDetail' | 'middleEastDetail' | 'africaDetail' | 'europeDetail' | 'indiaDetail' | 'cvOptimizationDetail' | 'linkedInOptimizationDetail' | 'careerStrategyDetail' | 'interviewPrepDetail' | 'jobSearchEnablementDetail' | 'jobDetailAndApply' | 'industriesPage' | 'contactPage' | 'aboutPage' | 'partnerPage' | 'careerStrategyEnquiry' | 'jobSeekerForm' | 'jobOpeningsPage';
 
 const pageMeta: { [key in View]?: { title: string; description: string } } = {
     main: {
@@ -47,6 +50,14 @@ const pageMeta: { [key in View]?: { title: string; description: string } } = {
     hiringForm: {
         title: 'Hire Top Talent | The Recruit Globe',
         description: 'Partner with us to find the perfect candidates for your organization. Submit your hiring requirements and let our experts handle the search.'
+    },
+    jobSeekerForm: {
+        title: 'Submit Your Profile | The Recruit Globe',
+        description: 'Submit your CV and details to The Recruit Globe. Let our expert recruiters connect you with future career opportunities.'
+    },
+    jobOpeningsPage: {
+        title: 'Job Openings | The Recruit Globe',
+        description: 'Explore current job openings and find your next career opportunity with The Recruit Globe. We have roles in Healthcare, IT, Oil & Gas, and more.'
     },
     industriesPage: {
         title: 'Industries We Serve | The Recruit Globe',
@@ -103,6 +114,10 @@ const pageMeta: { [key in View]?: { title: string; description: string } } = {
     careerStrategyDetail: {
         title: 'Career Strategy Consulting | The Recruit Globe',
         description: 'Navigate your professional journey with confidence. Get personalized guidance to define your career path and achieve long-term success.'
+    },
+    careerStrategyEnquiry: {
+        title: 'Enquire About Career Strategy | The Recruit Globe',
+        description: 'Submit your enquiry for our Career Strategy & Job Readiness Consulting service and take the next step in your professional journey.'
     },
     interviewPrepDetail: {
         title: 'Interview Preparation Service | The Recruit Globe',
@@ -211,12 +226,25 @@ const App: React.FC = () => {
     );
   }
 
+  if (view === 'jobSeekerForm') {
+    return (
+      <div className="bg-brand-light font-sans text-brand-dark">
+        <Header onNavigate={handleViewChange} />
+        <main>
+          <JobSeekerForm onBack={() => handleViewChange('main')} />
+        </main>
+        <Footer />
+        <ChatWidget />
+      </div>
+    );
+  }
+
   if (view === 'contactPage') {
     return (
       <div className="bg-brand-light font-sans text-brand-dark">
         <Header onNavigate={handleViewChange} />
         <main>
-          <ContactPage onBack={() => handleViewChange('main')} />
+          <ContactPage onBack={() => handleViewChange('main')} initialMessage={contactMessage} />
         </main>
         <Footer />
         <ChatWidget />
@@ -245,6 +273,25 @@ const App: React.FC = () => {
           <AboutPage 
             onBack={() => handleViewChange('main')}
             onNavigate={handleViewChange}
+          />
+        </main>
+        <Footer />
+        <ChatWidget />
+      </div>
+    );
+  }
+  
+  if (view === 'jobOpeningsPage') {
+    return (
+      <div className="bg-brand-light font-sans text-brand-dark">
+        <Header onNavigate={handleViewChange} />
+        <main>
+          <JobOpeningsPage
+            onBack={() => handleViewChange('main')}
+            onViewDetails={(job) => {
+              setJobForDetailPage(job);
+              handleViewChange('jobDetailAndApply');
+            }}
           />
         </main>
         <Footer />
@@ -283,7 +330,7 @@ const App: React.FC = () => {
         <main>
           <HealthcareDetail 
             onBack={() => handleViewChange('main')} 
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Healthcare sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Healthcare sector." })}
           />
         </main>
         <Footer />
@@ -299,7 +346,7 @@ const App: React.FC = () => {
         <main>
           <OilAndGasDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Oil & Gas sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Oil & Gas sector." })}
           />
         </main>
         <Footer />
@@ -315,7 +362,7 @@ const App: React.FC = () => {
         <main>
           <ConstructionDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Construction sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Construction sector." })}
           />
         </main>
         <Footer />
@@ -331,7 +378,7 @@ const App: React.FC = () => {
         <main>
           <ITDetail
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the IT & Technology sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the IT & Technology sector." })}
           />
         </main>
         <Footer />
@@ -347,7 +394,7 @@ const App: React.FC = () => {
         <main>
           <ManufacturingDetail
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Manufacturing sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Manufacturing sector." })}
           />
         </main>
         <Footer />
@@ -363,7 +410,7 @@ const App: React.FC = () => {
         <main>
           <MiningDetail
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Mining sector." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Mining sector." })}
           />
         </main>
         <Footer />
@@ -379,7 +426,7 @@ const App: React.FC = () => {
         <main>
           <MiddleEastDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Middle East region." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Middle East region." })}
           />
         </main>
         <Footer />
@@ -395,7 +442,11 @@ const App: React.FC = () => {
         <main>
           <AfricaDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Africa region." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Africa region." })}
+            onViewJob={(job) => {
+                setJobForDetailPage(job);
+                handleViewChange('jobDetailAndApply');
+            }}
           />
         </main>
         <Footer />
@@ -411,7 +462,7 @@ const App: React.FC = () => {
         <main>
           <EuropeDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the Europe region." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the Europe region." })}
           />
         </main>
         <Footer />
@@ -427,7 +478,7 @@ const App: React.FC = () => {
         <main>
           <IndiaDetail 
             onBack={() => handleViewChange('main')}
-            onDiscussStaffing={() => handleViewChange('main', '#contact', { contactMessage: "I'd like to discuss our staffing needs for the India region." })}
+            onDiscussStaffing={() => handleViewChange('contactPage', undefined, { contactMessage: "I'd like to discuss our staffing needs for the India region." })}
           />
         </main>
         <Footer />
@@ -443,7 +494,7 @@ const App: React.FC = () => {
         <main>
           <CVOptimizationDetail 
             onBack={() => handleViewChange('main')}
-            onEnquire={() => handleViewChange('main', '#contact', { contactMessage: "I'm interested in the International CV Optimization (ATS-Friendly) service." })}
+            onEnquire={() => handleViewChange('contactPage', undefined, { contactMessage: "I'm interested in the International CV Optimization (ATS-Friendly) service." })}
           />
         </main>
         <Footer />
@@ -459,7 +510,7 @@ const App: React.FC = () => {
         <main>
           <LinkedInOptimizationDetail 
             onBack={() => handleViewChange('main')}
-            onEnquire={() => handleViewChange('main', '#contact', { contactMessage: "I'm interested in the LinkedIn Profile Optimization service." })}
+            onEnquire={() => handleViewChange('contactPage', undefined, { contactMessage: "I'm interested in the LinkedIn Profile Optimization service." })}
           />
         </main>
         <Footer />
@@ -475,7 +526,7 @@ const App: React.FC = () => {
         <main>
           <CareerStrategyDetail 
             onBack={() => handleViewChange('main')}
-            onEnquire={() => handleViewChange('main', '#contact', { contactMessage: "I'm interested in the Career Strategy & Job Readiness Consulting service." })}
+            onEnquire={() => handleViewChange('careerStrategyEnquiry')}
           />
         </main>
         <Footer />
@@ -484,6 +535,21 @@ const App: React.FC = () => {
     );
   }
   
+  if (view === 'careerStrategyEnquiry') {
+      return (
+      <div className="bg-brand-light font-sans text-brand-dark">
+        <Header onNavigate={handleViewChange} />
+        <main>
+          <CareerStrategyEnquiryForm 
+            onBack={() => handleViewChange('careerStrategyDetail')}
+          />
+        </main>
+        <Footer />
+        <ChatWidget />
+      </div>
+    );
+  }
+
   if (view === 'interviewPrepDetail') {
     return (
       <div className="bg-brand-light font-sans text-brand-dark">
@@ -491,7 +557,7 @@ const App: React.FC = () => {
         <main>
           <InterviewPrepDetail 
             onBack={() => handleViewChange('main')}
-            onEnquire={() => handleViewChange('main', '#contact', { contactMessage: "I'm interested in the Interview Preparation & Salary Guidance service." })}
+            onEnquire={() => handleViewChange('contactPage', undefined, { contactMessage: "I'm interested in the Interview Preparation & Salary Guidance service." })}
           />
         </main>
         <Footer />
@@ -507,7 +573,7 @@ const App: React.FC = () => {
         <main>
           <JobSearchEnablementDetail 
             onBack={() => handleViewChange('main')}
-            onEnquire={() => handleViewChange('main', '#contact', { contactMessage: "I'm interested in the Job Search Enablement & Market Direction service." })}
+            onEnquire={() => handleViewChange('contactPage', undefined, { contactMessage: "I'm interested in the Job Search Enablement & Market Direction service." })}
           />
         </main>
         <Footer />
@@ -525,9 +591,8 @@ const App: React.FC = () => {
             job={jobForDetailPage}
             onBack={() => {
               setJobForDetailPage(null);
-              // Clear the hash from the URL when going back
               history.pushState("", document.title, window.location.pathname + window.location.search);
-              handleViewChange('main', '#jobs');
+              handleViewChange('jobOpeningsPage');
             }}
           />
         </main>
@@ -544,25 +609,31 @@ const App: React.FC = () => {
       <main>
         <Hero onNavigate={handleViewChange} />
         <SuccessStories onNavigate={handleViewChange} />
-        <PartnershipForm onNavigate={() => handleViewChange('partnerPage')} />
-        <Services onFindTalentClick={() => handleViewChange('hiringForm')} />
-        <JobSeekerServices onServiceClick={(serviceTitle) => {
-          if (serviceTitle === 'International CV Optimization (ATS-Friendly)') {
-            handleViewChange('cvOptimizationDetail');
-          }
-          if (serviceTitle === 'LinkedIn Profile Optimization') {
-            handleViewChange('linkedInOptimizationDetail');
-          }
-          if (serviceTitle === 'Career Strategy & Job Readiness Consulting') {
-            handleViewChange('careerStrategyDetail');
-          }
-          if (serviceTitle === 'Interview Preparation & Salary Guidance') {
-            handleViewChange('interviewPrepDetail');
-          }
-          if (serviceTitle === 'Job Search Enablement & Market Direction') {
-            handleViewChange('jobSearchEnablementDetail');
-          }
-        }} />
+        <PartnershipForm onNavigate={() => handleViewChange('hiringForm')} />
+        <Services 
+            onFindTalentClick={() => handleViewChange('hiringForm')}
+            onExploreOpportunitiesClick={() => handleViewChange('jobSeekerForm')}
+        />
+        <JobSeekerServices 
+          onServiceClick={(serviceTitle) => {
+            if (serviceTitle === 'International CV Optimization (ATS-Friendly)') {
+              handleViewChange('cvOptimizationDetail');
+            }
+            if (serviceTitle === 'LinkedIn Profile Optimization') {
+              handleViewChange('linkedInOptimizationDetail');
+            }
+            if (serviceTitle === 'Career Strategy & Job Readiness Consulting') {
+              handleViewChange('careerStrategyDetail');
+            }
+            if (serviceTitle === 'Interview Preparation & Salary Guidance') {
+              handleViewChange('interviewPrepDetail');
+            }
+            if (serviceTitle === 'Job Search Enablement & Market Direction') {
+              handleViewChange('jobSearchEnablementDetail');
+            }
+          }} 
+          onApplyClick={() => handleViewChange('jobSeekerForm')}
+        />
         <Verticals onVerticalClick={(verticalName) => {
             if (verticalName === 'Healthcare') handleViewChange('healthcareDetail');
             if (verticalName === 'Oil & Gas') handleViewChange('oilAndGasDetail');
@@ -584,10 +655,6 @@ const App: React.FC = () => {
           if (regionName === 'India') {
             handleViewChange('indiaDetail');
           }
-        }} />
-        <JobListings onViewDetails={(job) => {
-          setJobForDetailPage(job);
-          handleViewChange('jobDetailAndApply');
         }} />
         <About onLearnMore={() => handleViewChange('aboutPage')} />
         <Contact contactMessage={contactMessage} />

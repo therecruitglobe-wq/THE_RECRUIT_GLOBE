@@ -12,22 +12,22 @@ const roles = [
     {
         title: "Project Managers",
         description: "Overseeing projects from conception to completion, ensuring they are on time and within budget.",
-        imageUrl: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766910357/Project-Management-Tips-Chad-Fisher-Construction_fq2hnb.jpg"
     },
     {
         title: "Civil Engineers",
         description: "Designing and supervising the construction of infrastructure projects like roads, bridges, and buildings.",
-        imageUrl: "https://images.unsplash.com/photo-1600880292210-859b9a63a55e?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766911210/Bridging-the-Skills-Gap-Immediate-Steps-for-Young-Civil-Engineers-in-India_b2l3zt.jpg"
     },
     {
         title: "Site Supervisors",
         description: "Managing day-to-day operations on the construction site, ensuring safety and quality standards.",
-        imageUrl: "https://images.unsplash.com/photo-1575501826038-953245c11b15?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766911488/Carpenter_optimized_rtdvkc.jpg"
     },
     {
         title: "Architects & Designers",
         description: "Creating the blueprints and innovative designs for new construction and renovation projects.",
-        imageUrl: "https://images.unsplash.com/photo-1600215799343-57c2a75b06a0?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766911713/designer_nc0wjo.jpg"
     }
 ];
 
@@ -86,7 +86,7 @@ const ConstructionDetail: React.FC<ConstructionDetailProps> = ({ onBack, onDiscu
             </div>
             <div className="lg:w-1/3">
                 <img
-                    src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1920&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1920&auto=format=fit=crop"
                     alt="A high-rise construction site against a city skyline"
                     className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
                 />

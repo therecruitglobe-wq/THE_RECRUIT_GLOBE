@@ -17,7 +17,12 @@ const roles = [
     {
         title: "Cloud Engineers",
         description: "Designing, implementing, and managing cloud infrastructure on platforms like AWS, Azure, and GCP.",
-        imageUrl: "https://images.unsplash.com/photo-1580894908361-967195033215?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766916088/cloud_engineer_n6xfmm.jpg"
+    },
+    {
+        title: "Product Managers",
+        description: "Guiding product development from conception to launch, bridging technical and business goals.",
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766916495/product_manager_daliok.webp"
     },
     {
         title: "Cybersecurity Analysts",

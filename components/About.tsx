@@ -17,18 +17,11 @@ const About: React.FC<AboutProps> = ({ onLearnMore }) => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           <div className="lg:w-1/2 w-full">
             <div className="rounded-lg overflow-hidden shadow-2xl">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1920&auto=format=fit=crop"
+              <img
+                src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766923756/WhatsApp_Image_2025-12-11_at_16.54.39_6977c5b3_vnwmvr.jpg"
+                alt="A professional team in a modern office, representing a strategic recruitment partnership."
                 className="w-full h-full object-cover aspect-video"
-                aria-label="A diverse team of professionals collaborating on a project, showcasing The Recruit Globe's values."
-              >
-                <source src="https://videos.pexels.com/video-files/3209828/3209828-hd.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              />
             </div>
           </div>
           <div className="lg:w-1/2">

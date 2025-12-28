@@ -28,7 +28,7 @@ export const jobs: Job[] = [
         'Strong communication and interpersonal skills.',
         'License of professional engineer is a plus.'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1920&auto=format&fit=crop',
+    imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766868034/civil_fbibrq.jpg',
     datePosted: '2024-07-15',
   },
   {
@@ -56,7 +56,7 @@ export const jobs: Job[] = [
         'High level of commercial acumen and strategic thinking.',
         'Willingness to travel extensively across the African continent.'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1628191140046-687bbe486915?q=80&w=1920&auto=format&fit=crop',
+    imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766868256/CFO_vkt2ha.jpg',
     datePosted: '2024-07-12',
   },
   {
@@ -82,7 +82,7 @@ export const jobs: Job[] = [
         'Strong leadership and communication skills, with the ability to influence all levels of an organization.',
         'Experience working in a multinational project environment in the Middle East.'
     ],
-    imageUrl: 'https://img.freepik.com/free-photo/portrait-young-woman-engineer-with-helmet-standing-construction-site_625516-4351.jpg',
+    imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766867768/safety_officer_se2sfb.jpg',
     datePosted: '2024-07-10',
   },
   {
@@ -108,7 +108,7 @@ export const jobs: Job[] = [
         'Excellent communication and interpersonal skills.',
         'Willingness to work on a rotational basis in remote project locations.'
     ],
-    imageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1920&auto=format&fit=crop',
+    imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766868496/QA_QC_h4lttk.jpg',
     datePosted: '2024-07-08',
   }
 ];

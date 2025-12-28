@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
-import BriefcaseIcon from './icons/BriefcaseIcon';
+import WhatsAppIcon from './icons/WhatsAppIcon';
 
 interface HiringFormProps {
   onBack: () => void;
@@ -18,19 +18,47 @@ const HiringForm: React.FC<HiringFormProps> = ({ onBack }) => {
         keySkills: '',
         jobDescription: '',
     });
-    const [submitted, setSubmitted] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormState(prevState => ({ ...prevState, [name]: value }));
+        if (errors[name]) {
+            setErrors(prev => {
+                const newErrors = {...prev};
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
     };
+
+    const validateForm = () => {
+        const newErrors: { [key: string]: string } = {};
+        if (!formState.companyName.trim()) newErrors.companyName = 'Company name is required.';
+        if (!formState.contactName.trim()) newErrors.contactName = 'Your name is required.';
+        if (!formState.contactEmail.trim()) {
+            newErrors.contactEmail = 'Your email is required.';
+        } else if (!/\S+@\S+\.\S+/.test(formState.contactEmail)) {
+            newErrors.contactEmail = 'Please enter a valid email address.';
+        }
+        if (!formState.jobTitle.trim()) newErrors.jobTitle = 'Job title is required.';
+        if (!formState.roleType) newErrors.roleType = 'Please select a role type.';
+        if (!formState.experienceLevel) newErrors.experienceLevel = 'Please select an experience level.';
+        if (!formState.keySkills.trim()) newErrors.keySkills = 'Key skills are required.';
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateForm()) return;
         
-        const recipientEmail = 'hr@therecruitglobe.com';
-        const subject = `Hiring Requirement Submitted: ${formState.jobTitle} at ${formState.companyName}`;
-        const body = `
+        setStatus('loading');
+        
+        const message = `
 New Hiring Requirement
 -------------------------
 
@@ -47,23 +75,25 @@ Key Skills Required:
 ${formState.keySkills}
 
 Job Description / Additional Details:
-${formState.jobDescription}
+${formState.jobDescription || 'Not provided.'}
         `.trim();
 
-        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        window.location.href = mailtoLink;
-        setSubmitted(true);
+        const whatsappUrl = `https://wa.me/919354203405?text=${encodeURIComponent(message)}`;
+
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+            setStatus('success');
+        }, 500);
     };
 
-    if (submitted) {
+    if (status === 'success') {
         return (
             <section id="hiring-form" className="py-20 bg-brand-light min-h-screen">
                 <div className="container mx-auto px-6 text-center">
                     <div className="max-w-2xl mx-auto bg-white p-12 rounded-lg shadow-xl">
                         <h2 className="font-serif text-3xl font-bold text-brand-gold mb-4">Requirement Submitted!</h2>
                         <p className="text-lg text-gray-700 mb-8">
-                            Thank you for submitting your hiring needs. Your email client should now be open with the details. Please review and send the email to complete the process. Our team will get in touch with you shortly.
+                            Your hiring requirement is ready to be sent. Please click 'Send' in WhatsApp to finalize the submission. Our team will get in touch with you shortly.
                         </p>
                         <button
                             onClick={onBack}
@@ -97,33 +127,37 @@ ${formState.jobDescription}
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} noValidate className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="companyName" className="block text-sm font-bold text-brand-dark mb-2">Company Name</label>
-                                <input type="text" id="companyName" name="companyName" value={formState.companyName} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="companyName" name="companyName" value={formState.companyName} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.companyName ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.companyName && <p className="text-red-500 text-xs mt-1">{errors.companyName}</p>}
                             </div>
                             <div>
                                 <label htmlFor="jobTitle" className="block text-sm font-bold text-brand-dark mb-2">Job Title</label>
-                                <input type="text" id="jobTitle" name="jobTitle" value={formState.jobTitle} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="jobTitle" name="jobTitle" value={formState.jobTitle} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.jobTitle ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.jobTitle && <p className="text-red-500 text-xs mt-1">{errors.jobTitle}</p>}
                             </div>
                         </div>
 
                          <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="contactName" className="block text-sm font-bold text-brand-dark mb-2">Your Name</label>
-                                <input type="text" id="contactName" name="contactName" value={formState.contactName} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="contactName" name="contactName" value={formState.contactName} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.contactName ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.contactName && <p className="text-red-500 text-xs mt-1">{errors.contactName}</p>}
                             </div>
                              <div>
                                 <label htmlFor="contactEmail" className="block text-sm font-bold text-brand-dark mb-2">Your Email</label>
-                                <input type="email" id="contactEmail" name="contactEmail" value={formState.contactEmail} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="email" id="contactEmail" name="contactEmail" value={formState.contactEmail} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.contactEmail ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.contactEmail && <p className="text-red-500 text-xs mt-1">{errors.contactEmail}</p>}
                             </div>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
                              <div>
                                 <label htmlFor="roleType" className="block text-sm font-bold text-brand-dark mb-2">Role Type</label>
-                                <select id="roleType" name="roleType" value={formState.roleType} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition">
+                                <select id="roleType" name="roleType" value={formState.roleType} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.roleType ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}>
                                     <option value="" disabled>Select type...</option>
                                     <option value="Full-time">Full-time</option>
                                     <option value="Part-time">Part-time</option>
@@ -131,10 +165,11 @@ ${formState.jobDescription}
                                     <option value="Remote">Remote</option>
                                     <option value="Hybrid">Hybrid</option>
                                 </select>
+                                {errors.roleType && <p className="text-red-500 text-xs mt-1">{errors.roleType}</p>}
                             </div>
                             <div>
                                 <label htmlFor="experienceLevel" className="block text-sm font-bold text-brand-dark mb-2">Experience Level</label>
-                                 <select id="experienceLevel" name="experienceLevel" value={formState.experienceLevel} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition">
+                                 <select id="experienceLevel" name="experienceLevel" value={formState.experienceLevel} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.experienceLevel ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}>
                                     <option value="" disabled>Select level...</option>
                                     <option value="Entry-level">Entry-level</option>
                                     <option value="Mid-level">Mid-level</option>
@@ -142,23 +177,29 @@ ${formState.jobDescription}
                                     <option value="Lead / Manager">Lead / Manager</option>
                                     <option value="Executive">Executive</option>
                                 </select>
+                                {errors.experienceLevel && <p className="text-red-500 text-xs mt-1">{errors.experienceLevel}</p>}
                             </div>
                         </div>
                         
                         <div>
                             <label htmlFor="keySkills" className="block text-sm font-bold text-brand-dark mb-2">Key Skills Required</label>
-                            <textarea id="keySkills" name="keySkills" rows={3} value={formState.keySkills} onChange={handleChange} required placeholder="e.g., React, Python, Project Management, Financial Modeling" className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"></textarea>
+                            <textarea id="keySkills" name="keySkills" rows={3} value={formState.keySkills} onChange={handleChange} required placeholder="e.g., React, Python, Project Management, Financial Modeling" className={`w-full p-3 bg-gray-50 rounded-md border ${errors.keySkills ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}></textarea>
+                             {errors.keySkills && <p className="text-red-500 text-xs mt-1">{errors.keySkills}</p>}
                         </div>
 
                         <div>
-                            <label htmlFor="jobDescription" className="block text-sm font-bold text-brand-dark mb-2">Job Description / Additional Details</label>
+                            <label htmlFor="jobDescription" className="block text-sm font-bold text-brand-dark mb-2">Job Description / Additional Details (Optional)</label>
                             <textarea id="jobDescription" name="jobDescription" rows={5} value={formState.jobDescription} onChange={handleChange} placeholder="Please provide as much detail as possible about the role, responsibilities, and ideal candidate." className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"></textarea>
                         </div>
                         
                         <div className="text-center pt-4">
-                            <button type="submit" className="bg-brand-gold text-white font-bold py-3 px-12 rounded-full hover:bg-opacity-90 transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto gap-2">
-                                <BriefcaseIcon className="w-5 h-5" />
-                                Submit Requirement
+                            <button type="submit" disabled={status === 'loading'} className="bg-green-500 text-white font-bold py-3 px-12 rounded-full hover:bg-green-600 transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto gap-2 disabled:bg-gray-400">
+                                {status === 'loading' ? 'Preparing...' : (
+                                    <>
+                                        <WhatsAppIcon className="w-5 h-5" />
+                                        Submit via WhatsApp
+                                    </>
+                                )}
                             </button>
                         </div>
                     </form>

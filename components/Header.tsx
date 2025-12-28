@@ -28,23 +28,27 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
   const navLinks = [
     { href: '#home', label: 'Home' },
-    { href: '#services', label: 'Services' },
-    { href: '#partnership', label: 'Partner With Us' },
+    { label: 'Job Openings' },
+    { href: '#job-seeker-services', label: 'For Jobseekers' },
     { href: '#verticals', label: 'Industries' },
-    { href: '#jobs', label: 'Job Openings' },
+    { href: '#partnership', label: 'For Employers' },
     { href: '#about', label: 'About Us' },
     { href: '#contact', label: 'Contact' },
   ];
 
   const handleLinkClick = (link: { href?: string; label: string }) => {
-    if (link.label === 'Industries') {
+    if (link.label === 'Job Openings') {
+      onNavigate('jobOpeningsPage');
+    } else if (link.label === 'For Jobseekers') {
+      onNavigate('jobSeekerForm');
+    } else if (link.label === 'Industries') {
       onNavigate('industriesPage');
     } else if (link.label === 'Contact') {
       onNavigate('contactPage');
     } else if (link.label === 'About Us') {
       onNavigate('aboutPage');
-    } else if (link.label === 'Partner With Us') {
-      onNavigate('partnerPage');
+    } else if (link.label === 'For Employers') {
+      onNavigate('hiringForm');
     } else if (link.href) {
       onNavigate('main', link.href);
     }

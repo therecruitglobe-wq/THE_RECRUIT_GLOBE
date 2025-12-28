@@ -1,7 +1,6 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import GlobeAltIcon from './icons/GlobeAltIcon';
-import ArrowUpTrayIcon from './icons/ArrowUpTrayIcon';
 import { useAnimateOnScroll } from '../hooks/useAnimateOnScroll';
 
 interface GlobalReachProps {
@@ -18,7 +17,7 @@ const initialRegions = [
   {
     name: 'Middle East',
     description: 'Connecting visionary projects with top-tier experts in construction, oil & gas, and finance.',
-    imageUrl: 'https://images.unsplash.com/photo-1528826542662-3a832a1856c8?q=80&w=1920&auto=format&fit=crop',
+    imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766862460/me_c2pkh3.jpg',
     isClickable: true,
   },
   {
@@ -42,32 +41,7 @@ interface Region {
     isClickable: boolean;
 }
 
-interface RegionCardProps {
-    region: Region;
-    isEditable?: boolean;
-    onImageUpload?: (dataUrl: string) => void;
-}
-
-const RegionCard: React.FC<RegionCardProps> = ({ region, isEditable, onImageUpload }) => {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleUploadClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file && onImageUpload && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                onImageUpload(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
+const RegionCard: React.FC<{ region: Region }> = ({ region }) => {
     return (
         <div className="group relative rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden min-h-[300px] flex flex-col justify-end p-6 h-full">
             <img 
@@ -75,23 +49,8 @@ const RegionCard: React.FC<RegionCardProps> = ({ region, isEditable, onImageUplo
                 alt={`A cityscape representing ${region.name}`}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105" 
             />
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent ${isEditable ? 'group-hover:bg-black/50 transition-colors' : ''}`}></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
             
-            {isEditable && (
-                <>
-                    <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/png, image/jpeg, image/webp" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <button 
-                            onClick={handleUploadClick}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 hover:bg-white text-brand-dark font-bold py-2 px-4 rounded-full flex items-center gap-2 transform hover:scale-105"
-                        >
-                            <ArrowUpTrayIcon className="w-5 h-5" />
-                            Change Image
-                        </button>
-                    </div>
-                </>
-            )}
-
             <div className="relative z-10" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}>
                 <h3 className="font-serif text-2xl font-bold text-white mb-2">{region.name}</h3>
                 <p className="text-gray-200">{region.description}</p>
@@ -101,33 +60,8 @@ const RegionCard: React.FC<RegionCardProps> = ({ region, isEditable, onImageUplo
 };
 
 const GlobalReach: React.FC<GlobalReachProps> = ({ onRegionClick }) => {
-  const [regions, setRegions] = useState<Region[]>(initialRegions);
-  const storageKey = 'global-reach-middle-east-image';
+  const [regions] = useState<Region[]>(initialRegions);
   const [titleRef, isTitleVisible] = useAnimateOnScroll<HTMLDivElement>();
-
-  useEffect(() => {
-    try {
-        const savedImage = localStorage.getItem(storageKey);
-        if (savedImage) {
-            setRegions(prevRegions => prevRegions.map(r => 
-                r.name === 'Middle East' ? { ...r, imageUrl: savedImage } : r
-            ));
-        }
-    } catch (error) {
-        console.error("Could not access localStorage:", error);
-    }
-  }, []);
-
-  const handleImageUpload = (dataUrl: string) => {
-    try {
-        localStorage.setItem(storageKey, dataUrl);
-        setRegions(prevRegions => prevRegions.map(r => 
-            r.name === 'Middle East' ? { ...r, imageUrl: dataUrl } : r
-        ));
-    } catch (error) {
-        console.error("Could not save image to localStorage:", error);
-    }
-  };
 
   return (
     <section id="global-reach" className="py-20 bg-white overflow-hidden">
@@ -147,8 +81,7 @@ const GlobalReach: React.FC<GlobalReachProps> = ({ onRegionClick }) => {
                 const [cardRef, isCardVisible] = useAnimateOnScroll<HTMLButtonElement | HTMLDivElement>();
                 const animationClasses = `transition-all duration-700 ${isCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`;
                 const animationStyle = { transitionDelay: `${index * 100}ms` };
-                const isMiddleEast = region.name === 'Middle East';
-
+                
                 if (region.isClickable) {
                     return (
                         <button 
@@ -159,11 +92,7 @@ const GlobalReach: React.FC<GlobalReachProps> = ({ onRegionClick }) => {
                             style={animationStyle}
                             aria-label={`Learn more about our services in ${region.name}`}
                         >
-                            <RegionCard 
-                                region={region} 
-                                isEditable={isMiddleEast}
-                                onImageUpload={isMiddleEast ? handleImageUpload : undefined}
-                            />
+                            <RegionCard region={region} />
                         </button>
                     );
                 }

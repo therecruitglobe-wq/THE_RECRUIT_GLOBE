@@ -6,9 +6,10 @@ import { useAnimateOnScroll } from '../hooks/useAnimateOnScroll';
 
 interface ServicesProps {
   onFindTalentClick: () => void;
+  onExploreOpportunitiesClick: () => void;
 }
 
-const Services: React.FC<ServicesProps> = ({ onFindTalentClick }) => {
+const Services: React.FC<ServicesProps> = ({ onFindTalentClick, onExploreOpportunitiesClick }) => {
   const [titleRef, isTitleVisible] = useAnimateOnScroll<HTMLDivElement>();
   const [seekersRef, isSeekersVisible] = useAnimateOnScroll<HTMLDivElement>();
   const [employersRef, isEmployersVisible] = useAnimateOnScroll<HTMLDivElement>();
@@ -33,7 +34,7 @@ const Services: React.FC<ServicesProps> = ({ onFindTalentClick }) => {
         >
           <div className="md:w-1/2 w-full">
             <img 
-              src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1920&auto-format&fit=crop" 
+              src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766924221/jobseekers_je7h5h.jpg" 
               alt="Job Seekers collaborating in a professional setting" 
               className="rounded-lg shadow-2xl w-full h-auto object-cover" 
               style={{maxHeight: '400px'}} 
@@ -45,12 +46,12 @@ const Services: React.FC<ServicesProps> = ({ onFindTalentClick }) => {
             <p className="text-gray-600 mb-6">
               Unlock your career potential. We connect you with exclusive opportunities at leading companies, providing expert guidance and support throughout your job search.
             </p>
-            <a 
-              href="#jobs" 
+            <button 
+              onClick={onExploreOpportunitiesClick}
               className="bg-brand-dark text-white font-bold py-3 px-8 rounded-full hover:bg-brand-gold transition duration-300 inline-block transform hover:scale-105"
             >
               Explore Opportunities
-            </a>
+            </button>
           </div>
         </div>
 

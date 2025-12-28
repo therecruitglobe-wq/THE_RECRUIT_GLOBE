@@ -16,22 +16,22 @@ const sectors = [
     {
         name: "Technology & IT Hubs",
         locations: "Bangalore, Hyderabad, Pune",
-        imageUrl: "https://images.unsplash.com/photo-1552944322-b2f910601b3f?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766863807/IT_pjsow0.jpg"
     },
     {
         name: "Manufacturing & Engineering",
         locations: "Chennai, Pune, Gurugram",
-        imageUrl: "https://images.unsplash.com/photo-1580982327596-417c838f7851?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766864048/manufacturing_qpb54s.jpg"
     },
     {
         name: "Financial Services",
         locations: "Mumbai, Gurugram, Bangalore",
-        imageUrl: "https://images.unsplash.com/photo-1600965962361-9035dbfd1c29?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766864274/financial_services_f84cgj.jpg"
     },
      {
         name: "Pharmaceuticals & Healthcare",
         locations: "Hyderabad, Ahmedabad, Mumbai",
-        imageUrl: "https://images.unsplash.com/photo-1584982236709-56953f47af1b?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766864532/healthcare-pharma_fapopl.jpg"
     }
 ];
 
@@ -98,8 +98,8 @@ const IndiaDetail: React.FC<IndiaDetailProps> = ({ onBack, onDiscussStaffing }) 
             </div>
             <div className="lg:w-1/3">
                 <img 
-                    src="https://images.unsplash.com/photo-1596711925184-256928e18e8a?q=80&w=1920&auto=format&fit=crop" 
-                    alt="A modern office building in India" 
+                    src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766864828/corporate_yhxrt4.webp" 
+                    alt="A corporate team collaborating in an office in India" 
                     className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
                 />
             </div>

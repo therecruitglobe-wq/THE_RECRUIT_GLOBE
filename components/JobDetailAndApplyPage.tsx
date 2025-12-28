@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import type { Job } from '../types';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 import UploadIcon from './icons/UploadIcon';
+import WhatsAppIcon from './icons/WhatsAppIcon';
 
 interface JobDetailAndApplyPageProps {
   job: Job;
@@ -15,9 +16,6 @@ const getEmploymentType = (type: Job['type']): string => {
         case 'Part-time': return 'PART_TIME';
         case 'Contract': return 'CONTRACTOR';
         case 'Remote': return 'FULL_TIME'; // Assume Remote is full-time
-        // FIX: The `default` case was unreachable because all possible values of the `Job['type']` union 
-        // were already handled. TypeScript correctly inferred `type` as `never` in this unreachable
-        // code block, causing a compile error on `type.toUpperCase()`. Removing the dead code resolves this.
     }
 };
 
@@ -27,7 +25,7 @@ const JobDetailAndApplyPage: React.FC<JobDetailAndApplyPageProps> = ({ job, onBa
   const [resume, setResume] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
   const [errors, setErrors] = useState<{ name?: string; email?: string; resume?: string }>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
   useEffect(() => {
     const postDate = new Date(job.datePosted);
@@ -99,21 +97,23 @@ const JobDetailAndApplyPage: React.FC<JobDetailAndApplyPageProps> = ({ job, onBa
             setResume(null);
             setFileName('');
             setErrors(prev => ({ ...prev, resume: 'Invalid file type. Please upload a PDF or Word document.' }));
-            // Clear the file input so the user can select another file.
             e.target.value = '';
         }
     }
   };
 
   const validateForm = () => {
-    const newErrors: { name?: string; email?: string } = {};
+    const newErrors: { name?: string; email?: string; resume?: string } = {};
     if (!name.trim()) newErrors.name = 'Name is required.';
     if (!email.trim()) {
       newErrors.email = 'Email is required.';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Please enter a valid email address.';
     }
-    setErrors(prev => ({...prev, ...newErrors}));
+    if (!resume) {
+        newErrors.resume = 'Please upload your CV to apply.';
+    }
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -121,33 +121,30 @@ const JobDetailAndApplyPage: React.FC<JobDetailAndApplyPageProps> = ({ job, onBa
     e.preventDefault();
     if (!validateForm()) return;
     
-    const recipientEmail = 'hr@therecruitglobe.com';
-    const subject = `Job Application: ${job.title} - ${name}`;
-    let body = `
-Dear Hiring Team,
-
-Please consider my application for the following position:
-
+    setStatus('loading');
+    setErrors({});
+    
+    const message = `
+New Job Application
+-------------------------
 Position: ${job.title}
 Company: ${job.company}
-Location: ${job.location}
 
---- My Details ---
+Applicant Details
+-----------------
 Name: ${name}
 Email: ${email}
-    `.trim();
+-------------------------
+My CV "${fileName}" is ready to be attached.
+    `.trim().replace(/\n/g, '%0A');
 
-    if (fileName) {
-        body += `\n\nMy resume is named "${fileName}" and I will be attaching it to this email.`;
-    } else {
-        body += `\n\nI can provide my resume upon request.`;
-    }
+    const whatsappUrl = `https://wa.me/919354203405?text=${message}`;
     
-    body += "\n\nThank you for your time and consideration.";
-
-    const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
-    setSubmitted(true);
+    // Short delay to show loading state before redirecting
+    setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+        setStatus('success');
+    }, 500);
   };
 
   return (
@@ -193,13 +190,18 @@ Email: ${email}
 
             <div className="lg:col-span-1">
               <div className="sticky top-28 bg-brand-light p-6 rounded-lg shadow-lg border-t-4 border-brand-gold">
-                {submitted ? (
+                {status === 'success' ? (
                   <div className="text-center">
-                    <h3 className="font-serif text-2xl font-bold text-brand-gold mb-3">Thank You!</h3>
+                    <h3 className="font-serif text-2xl font-bold text-brand-gold mb-3">Redirecting to WhatsApp...</h3>
                     <p className="text-gray-700">
-                      Your email application has been prepared. Please review it in your mail client.
-                      {fileName && <strong className="block mt-2"> Don't forget to attach your resume ("{fileName}")!</strong>}
+                      Your application message is ready. Please click 'Send' in WhatsApp and remember to **manually attach your CV**.
                     </p>
+                     <button
+                        onClick={onBack}
+                        className="mt-6 bg-brand-dark text-white font-bold py-2 px-6 rounded-full hover:bg-brand-gold transition duration-300"
+                    >
+                        Return to Listings
+                    </button>
                   </div>
                 ) : (
                   <>
@@ -227,8 +229,13 @@ Email: ${email}
                         <input type="file" id="resume-upload" className="hidden" onChange={handleFileChange} accept=".pdf,.doc,.docx" />
                         {errors.resume && <p className="text-red-500 text-xs mt-1">{errors.resume}</p>}
                       </div>
-                      <button type="submit" className="w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition duration-300 transform hover:scale-105">
-                        Submit Application via Email
+                      <button type="submit" disabled={status === 'loading'} className="w-full bg-green-500 text-white font-bold py-3 px-8 rounded-full hover:bg-green-600 transition duration-300 transform hover:scale-105 disabled:bg-gray-400 flex items-center justify-center gap-2">
+                         {status === 'loading' ? 'Preparing...' : (
+                            <>
+                                <WhatsAppIcon className="w-5 h-5" />
+                                Apply via WhatsApp
+                            </>
+                        )}
                       </button>
                     </form>
                   </>

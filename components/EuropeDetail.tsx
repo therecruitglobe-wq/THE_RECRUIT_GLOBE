@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 import CheckCircleIcon from './icons/CheckCircleIcon';
 import EngineeringIcon from './icons/EngineeringIcon';
@@ -12,26 +12,26 @@ interface EuropeDetailProps {
   onDiscussStaffing: () => void;
 }
 
-const regions = [
+const initialRegions = [
     {
         name: "United Kingdom",
         sectors: ["Finance", "Technology", "Life Sciences"],
-        imageUrl: "https://images.unsplash.com/photo-1529655683826-1c21ef24a5b8?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766865106/United-Kingdom_osjhen.jpg",
     },
     {
         name: "Germany",
         sectors: ["Engineering", "Automotive", "Technology"],
-        imageUrl: "https://images.unsplash.com/photo-1528642721014-a3c3b030438a?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766865460/germany_lbrynb.jpg",
     },
     {
         name: "France",
         sectors: ["Aerospace", "Luxury", "Technology"],
-        imageUrl: "https://images.unsplash.com/photo-1502602898457-385429124264?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766865648/france_image_kfosnv.jpg",
     },
      {
         name: "The Nordics",
         sectors: ["Technology", "Renewable Energy", "Design"],
-        imageUrl: "https://images.unsplash.com/photo-1516962322394-2941513c0138?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766865965/Stockholm-Nordics-cost-feature-image_ik9xwx.webp",
     }
 ];
 
@@ -47,7 +47,30 @@ const sectorIcons: { [key: string]: React.ReactNode } = {
     "Design": <ITIcon className="w-6 h-6" />
 };
 
+const RegionCard: React.FC<{ region: typeof initialRegions[0] }> = ({ region }) => {
+    return (
+        <div className="group relative rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden min-h-[250px] flex flex-col justify-end p-4">
+            <img src={region.imageUrl} alt={region.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+            
+            <div className="relative z-10" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}>
+                <h4 className="font-bold text-white text-xl font-serif mb-3">{region.name}</h4>
+                <div className="flex flex-wrap gap-2">
+                    {region.sectors.map(sector => (
+                        <div key={sector} className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full">
+                            {sectorIcons[sector]}
+                            <span>{sector}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const EuropeDetail: React.FC<EuropeDetailProps> = ({ onBack, onDiscussStaffing }) => {
+  const [regions] = useState(initialRegions);
+
   return (
     <section id="europe-detail" className="py-20 bg-brand-light animate-fade-in">
       <div className="container mx-auto px-6">
@@ -61,8 +84,8 @@ const EuropeDetail: React.FC<EuropeDetailProps> = ({ onBack, onDiscussStaffing }
         </button>
 
         <div className="bg-white p-8 md:p-12 rounded-lg shadow-xl">
-          <div className="flex flex-col lg:flex-row gap-12">
-            <div className="lg:w-2/3">
+          <div>
+            <div>
               <h2 className="font-serif text-4xl font-bold text-brand-dark mb-4">
                 Your Recruitment Bridge to Europe
               </h2>
@@ -73,21 +96,10 @@ const EuropeDetail: React.FC<EuropeDetailProps> = ({ onBack, onDiscussStaffing }
               <h3 className="font-serif text-2xl font-bold text-brand-dark mt-8 mb-4">Key Markets & Sector Expertise</h3>
               <div className="grid sm:grid-cols-2 gap-6 mt-6">
                 {regions.map(region => (
-                    <div key={region.name} className="group relative rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden min-h-[250px] flex flex-col justify-end p-4">
-                        <img src={region.imageUrl} alt={region.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
-                        <div className="relative z-10" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}>
-                            <h4 className="font-bold text-white text-xl font-serif mb-3">{region.name}</h4>
-                            <div className="flex flex-wrap gap-2">
-                                {region.sectors.map(sector => (
-                                    <div key={sector} className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full">
-                                        {sectorIcons[sector]}
-                                        <span>{sector}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                  <RegionCard
+                    key={region.name}
+                    region={region}
+                  />
                 ))}
               </div>
 
@@ -106,13 +118,11 @@ const EuropeDetail: React.FC<EuropeDetailProps> = ({ onBack, onDiscussStaffing }
                   Discuss Your Europe Staffing Needs
                 </button>
               </div>
-            </div>
-            <div className="lg:w-1/3">
-                <img 
-                    src="https://images.unsplash.com/photo-1582298539691-3e5c941785ee?q=80&w=1920&auto=format&fit=crop" 
-                    alt="A modern office building in a European city" 
-                    className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
-                />
+              <img 
+                src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766866235/675883_Watermark-Place_London_WE2159_45_CW_Magazin_Markt_und_Meinung_bueroimmobilienmaerkte_2024_2400x1350_ftvf1q.jpg" 
+                alt="Watermark Place, a modern office building in London" 
+                className="w-full h-auto object-cover rounded-lg shadow-lg mt-10"
+              />
             </div>
           </div>
         </div>

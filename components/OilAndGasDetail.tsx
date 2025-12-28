@@ -2,8 +2,6 @@
 import React from 'react';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 import CheckCircleIcon from './icons/CheckCircleIcon';
-import ImageUploader from './ImageUploader';
-import ImageGenerator from './ImageGenerator';
 
 interface OilAndGasDetailProps {
   onBack: () => void;
@@ -14,22 +12,22 @@ const roles = [
     {
         title: "Drilling Engineers",
         description: "Managing drilling operations for exploration and production wells, optimizing performance and safety.",
-        imageUrl: "https://img.freepik.com/free-photo/silhouette-offshore-oil-rig-drilling-platform-sea-against-dramatic-sunset-sky_1258-152431.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766912042/DrillingEngineering_dhpzrv.jpg"
     },
     {
         title: "Reservoir Engineers",
         description: "Analyzing subsurface data to estimate oil and gas reserves and forecast future production.",
-        imageUrl: "https://img.freepik.com/free-photo/multiethnic-engineers-discussing-while-using-laptop-oil-gas-refinery_625516-3694.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766912279/reservoir_gdfnch.jpg"
     },
     {
         title: "Process Safety Engineers",
         description: "Ensuring the safe design and operation of downstream facilities like refineries and chemical plants.",
-        imageUrl: "https://img.freepik.com/free-photo/industry-concept-with-pipelines_23-2147743958.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766912491/prosess_safety_aczhbx.jpg"
     },
     {
         title: "Renewable Energy Specialists",
         description: "Developing and managing projects in wind, solar, and hydrogen to support the energy transition.",
-        imageUrl: "https://img.freepik.com/free-photo/alternative-energy-source-wind-turbines-farm-field-generative-ai_191095-2603.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766912739/energy_nss1ot.jpg"
     }
 ];
 
@@ -87,17 +85,14 @@ const OilAndGasDetail: React.FC<OilAndGasDetailProps> = ({ onBack, onDiscussStaf
               </div>
             </div>
             <div className="lg:w-1/3">
-                <ImageUploader
-                    defaultImageUrl="https://img.freepik.com/free-photo/offshore-oil-rig-platform-ocean-generative-ai_188544-9645.jpg"
-                    altText="Engineer working on an oil rig"
-                    storageKey="oil-gas-detail-image"
+                <img 
+                    src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766866919/oilandgas_cover_jnld5g.png" 
+                    alt="An illustration representing the global oil and gas industry" 
+                    className="w-full h-full object-cover rounded-lg shadow-lg min-h-[400px]"
                 />
             </div>
           </div>
         </div>
-
-        <ImageGenerator />
-
       </div>
     </section>
   );

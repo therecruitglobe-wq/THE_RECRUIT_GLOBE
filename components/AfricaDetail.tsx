@@ -9,22 +9,25 @@ import FinanceIcon from './icons/FinanceIcon';
 import OilGasIcon from './icons/OilGasIcon';
 import AgricultureIcon from './icons/AgricultureIcon';
 import ConstructionIcon from './icons/ConstructionIcon';
+import { jobs } from '../data/jobs';
+import type { Job } from '../types';
 
 interface AfricaDetailProps {
   onBack: () => void;
   onDiscussStaffing: () => void;
+  onViewJob: (job: Job) => void;
 }
 
 const regions = [
     {
         name: "South Africa",
         sectors: ["Mining", "Finance", "Technology"],
-        imageUrl: "https://images.unsplash.com/photo-1549472314-a37174187f5d?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766862882/South-Africa-e1634206886542-1170x630.jpg.optimal_axwxha.jpg"
     },
     {
         name: "Nigeria",
         sectors: ["Oil & Gas", "Technology", "Finance"],
-        imageUrl: "https://images.unsplash.com/photo-1592398696486-53535a2253ce?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766863149/nigeria_wd8qif.jpg"
     },
     {
         name: "East Africa (Kenya)",
@@ -34,7 +37,7 @@ const regions = [
      {
         name: "North Africa",
         sectors: ["Energy", "Construction", "Manufacturing"],
-        imageUrl: "https://images.unsplash.com/photo-1533104816931-20fa69186ca2?q=80&w=1920&auto=format&fit=crop"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766863476/north_africa_oq4xnl.jpg"
     }
 ];
 
@@ -49,7 +52,9 @@ const sectorIcons: { [key: string]: React.ReactNode } = {
     "Manufacturing": <ConstructionIcon className="w-6 h-6" />
 };
 
-const AfricaDetail: React.FC<AfricaDetailProps> = ({ onBack, onDiscussStaffing }) => {
+const AfricaDetail: React.FC<AfricaDetailProps> = ({ onBack, onDiscussStaffing, onViewJob }) => {
+  const cfoJob = jobs.find(job => job.id === 7);
+
   return (
     <section id="africa-detail" className="py-20 bg-brand-light animate-fade-in">
       <div className="container mx-auto px-6">
@@ -110,11 +115,26 @@ const AfricaDetail: React.FC<AfricaDetailProps> = ({ onBack, onDiscussStaffing }
               </div>
             </div>
             <div className="lg:w-1/3">
-                <img 
-                    src="https://images.unsplash.com/photo-1547471080-7cc2d5d88e93?q=80&w=1920&auto=format&fit=crop" 
-                    alt="A modern cityscape in Africa" 
-                    className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
-                />
+               {cfoJob && (
+                    <div className="bg-brand-light p-6 rounded-lg shadow-lg border-t-4 border-brand-gold sticky top-28">
+                        <h3 className="font-serif text-xl font-bold text-brand-dark mb-4 text-center">Featured Executive Role</h3>
+                        <img
+                            src={cfoJob.imageUrl || 'https://images.unsplash.com/photo-1547471080-7cc2d5d88e93?q=80&w=1920&auto=format=fit=crop'}
+                            alt={cfoJob.title}
+                            className="w-full h-auto object-cover rounded-lg shadow-lg"
+                        />
+                        <div className="mt-4 text-center">
+                            <h4 className="font-bold text-lg text-brand-dark">{cfoJob.title}</h4>
+                            <p className="text-gray-600">{cfoJob.company}</p>
+                            <button
+                                onClick={() => onViewJob(cfoJob)}
+                                className="w-full mt-4 bg-brand-dark text-white font-bold py-2 px-4 rounded-full hover:bg-brand-gold transition duration-300"
+                            >
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
           </div>
         </div>

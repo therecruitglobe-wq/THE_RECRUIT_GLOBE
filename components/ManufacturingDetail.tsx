@@ -2,7 +2,6 @@
 import React from 'react';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 import CheckCircleIcon from './icons/CheckCircleIcon';
-import ImageUploader from './ImageUploader';
 
 interface ManufacturingDetailProps {
   onBack: () => void;
@@ -11,24 +10,24 @@ interface ManufacturingDetailProps {
 
 const roles = [
     {
-        title: "Production Managers",
-        description: "Overseeing the entire production process, ensuring efficiency, quality, and safety on the factory floor.",
-        imageUrl: "https://img.freepik.com/free-photo/production-line-with-multiple-industrial-robots_91128-4678.jpg"
+        title: "Product Managers",
+        description: "Leading the product lifecycle from conception to launch, ensuring alignment with market needs and manufacturing capabilities.",
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766916818/product_jcoipl.png"
     },
     {
         title: "Quality Assurance Engineers",
         description: "Implementing and maintaining quality control systems to ensure products meet stringent standards.",
-        imageUrl: "https://img.freepik.com/free-photo/young-maintenance-technician-servicing-robotic-arm-welding-machine-his-factory_625516-1188.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766918704/evolution-from-software-quality-assurance_w2uv7r.jpg"
     },
     {
         title: "Supply Chain Specialists",
         description: "Managing logistics, inventory, and procurement to create a seamless and cost-effective supply chain.",
-        imageUrl: "https://img.freepik.com/free-photo/huge-distribution-warehouse-with-high-shelves_1268-29114.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766917911/busy-manufacturing-engineers_pkobje.jpg"
     },
     {
         title: "Automation Engineers",
         description: "Designing and implementing robotic and automated systems to enhance production efficiency and safety.",
-        imageUrl: "https://img.freepik.com/free-photo/robotic-arm-producing-automotive-parts_91128-4680.jpg"
+        imageUrl: "https://res.cloudinary.com/dghlhdc9n/image/upload/v1766918973/automation_hcofla.jpg"
     }
 ];
 
@@ -84,12 +83,17 @@ const ManufacturingDetail: React.FC<ManufacturingDetailProps> = ({ onBack, onDis
                   Discuss Your Manufacturing Staffing Needs
                 </button>
               </div>
+              <img 
+                src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766919417/types-of-manufacturing-processes_ms3fam.jpg"
+                alt="Types of manufacturing processes"
+                className="w-full h-auto object-cover rounded-lg shadow-lg mt-10"
+              />
             </div>
             <div className="lg:w-1/3">
-                <ImageUploader
-                    defaultImageUrl="https://img.freepik.com/free-photo/robotic-arm-production-line-factory-conveyor-belt_91128-4663.jpg"
-                    altText="A robotic arm on a modern assembly line"
-                    storageKey="manufacturing-detail-image"
+                <img 
+                    src="https://img.freepik.com/free-photo/robotic-arm-production-line-factory-conveyor-belt_91128-4663.jpg"
+                    alt="A robotic arm on a modern assembly line"
+                    className="w-full h-full object-cover rounded-lg shadow-lg min-h-[400px]"
                 />
             </div>
           </div>

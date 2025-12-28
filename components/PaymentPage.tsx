@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-// FIX: The `qrcode.react` library exports named components like `QRCodeSVG`, not a default export for the component.
-import { QRCodeSVG } from 'qrcode.react';
+// The qrcode.react library provides components for rendering QR codes as SVG or Canvas.
+import QRCode from 'qrcode.react';
 import { config } from '../config';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
 import CreditCardIcon from './icons/CreditCardIcon';
@@ -114,8 +114,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ service, onBack, onPaymentSuc
              {isUpiConfigured ? (
                 <>
                     <div className="flex justify-center my-4 p-4 bg-white border rounded-lg">
-                        {/* FIX: Use the QRCodeSVG component which is the correct component to render an SVG QR code. */}
-                        <QRCodeSVG value={config.upiPaymentLink} size={192} level="M" />
+                        <QRCode value={config.upiPaymentLink} size={192} level="M" renderAs="svg" />
                     </div>
                     <p className="text-gray-600 mb-4">Scan the code above with any UPI app.</p>
                     <div className="flex justify-center items-center gap-x-6 gap-y-2 my-6 flex-wrap">

@@ -7,9 +7,10 @@ import WhatsAppIcon from './icons/WhatsAppIcon';
 
 interface ContactPageProps {
   onBack: () => void;
+  initialMessage?: string;
 }
 
-const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
+const ContactPage: React.FC<ContactPageProps> = ({ onBack, initialMessage }) => {
   return (
     <section id="contact-page" className="py-20 bg-brand-light animate-fade-in min-h-screen">
       <div className="container mx-auto px-6">
@@ -52,7 +53,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
             
             <div>
                  <h3 className="font-serif text-2xl font-bold mb-6 text-brand-dark">Send Us a Message</h3>
-                 <ContactForm isPage={true} />
+                 <ContactForm isPage={true} initialMessage={initialMessage} />
             </div>
         </div>
       </div>

@@ -34,19 +34,19 @@ const verticals = [
     { 
         name: 'Oil & Gas', 
         icon: <OilGasIcon />,
-        imageUrl: 'https://images.unsplash.com/photo-1563721394-3995f5ff7a12?q=80&w=1920&auto=format&fit=crop',
+        imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766866919/oilandgas_cover_jnld5g.png',
         isClickable: true,
     },
     { 
         name: 'Manufacturing', 
         icon: <ManufacturingIcon />,
-        imageUrl: 'https://img.freepik.com/free-photo/large-factory-area-with-machines-workers_181624-6338.jpg',
+        imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766867273/manufacturing_image_swdtra.jpg',
         isClickable: true,
     },
     {
         name: 'Mining',
         icon: <MiningIcon />,
-        imageUrl: 'https://img.freepik.com/free-photo/large-dump-truck-transporting-stone-career_23-2147721869.jpg',
+        imageUrl: 'https://res.cloudinary.com/dghlhdc9n/image/upload/v1766867460/Mining_osnie9.png',
         isClickable: true,
     }
 ];

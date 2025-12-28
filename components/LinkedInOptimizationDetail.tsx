@@ -84,7 +84,7 @@ const LinkedInOptimizationDetail: React.FC<LinkedInOptimizationDetailProps> = ({
             </div>
             <div className="lg:w-1/3">
                 <img 
-                    src="https://images.unsplash.com/photo-1611944212129-29955ae43b1c?q=80&w=1920&auto=format&fit=crop" 
+                    src="https://res.cloudinary.com/dghlhdc9n/image/upload/v1766924639/linkedin_ilp2gy.jpg" 
                     alt="A professional's LinkedIn profile on a laptop screen" 
                     className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
                 />

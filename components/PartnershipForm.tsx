@@ -17,9 +17,9 @@ const PartnershipForm: React.FC<PartnershipFormProps> = ({ onNavigate }) => {
                     ref={titleRef}
                     className={`text-center transition-all duration-1000 ${isTitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                 >
-                    <h2 className="font-serif text-4xl font-bold">Partner With The Recruit Globe</h2>
+                    <h2 className="font-serif text-4xl font-bold">Find Your Next Top Performer</h2>
                     <p className="text-lg text-gray-600 mt-4 max-w-3xl mx-auto mb-8">
-                        Join forces with a leader in global recruitment. Let us connect you with the talent that will drive your company's future. Submit your hiring needs and let our experts find the perfect fit.
+                        Ready to build your dream team? We specialize in finding exceptional candidates who align with your vision and culture. Let us handle the recruitment process, so you can focus on building your business.
                     </p>
                     <button 
                         onClick={onNavigate}

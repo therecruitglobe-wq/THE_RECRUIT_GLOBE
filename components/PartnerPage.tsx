@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
-import BriefcaseIcon from './icons/BriefcaseIcon';
+import WhatsAppIcon from './icons/WhatsAppIcon';
 
 interface PartnerPageProps {
   onBack: () => void;
@@ -17,7 +17,8 @@ const PartnerPage: React.FC<PartnerPageProps> = ({ onBack }) => {
         industry: '',
         hiringNeeds: '',
     });
-    const [submitted, setSubmitted] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -25,14 +26,46 @@ const PartnerPage: React.FC<PartnerPageProps> = ({ onBack }) => {
             ...prevState,
             [name]: value,
         }));
+        if (errors[name]) {
+            setErrors(prev => {
+                const newErrors = {...prev};
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors: { [key: string]: string } = {};
+        if (!formState.companyName.trim()) newErrors.companyName = 'Company name is required.';
+        if (!formState.companyWebsite.trim()) {
+            newErrors.companyWebsite = 'Company website is required.';
+        } else if (!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(formState.companyWebsite)) {
+            // Basic URL validation
+            // newErrors.companyWebsite = 'Please enter a valid website URL.';
+        }
+        if (!formState.contactName.trim()) newErrors.contactName = 'Contact name is required.';
+        if (!formState.contactEmail.trim()) {
+            newErrors.contactEmail = 'Contact email is required.';
+        } else if (!/\S+@\S+\.\S+/.test(formState.contactEmail)) {
+            newErrors.contactEmail = 'Please enter a valid email address.';
+        }
+        if (!formState.companySize) newErrors.companySize = 'Please select a company size.';
+        if (!formState.industry.trim()) newErrors.industry = 'Industry is required.';
+        if (!formState.hiringNeeds.trim()) newErrors.hiringNeeds = 'Please describe your hiring needs.';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const recipientEmail = 'hr@therecruitglobe.com';
-        const subject = `Partnership Inquiry: ${formState.companyName}`;
-        const body = `
+        if (!validateForm()) return;
+
+        setStatus('loading');
+        setErrors({});
+
+        const message = `
 New Partnership Inquiry
 -------------------------
 
@@ -47,20 +80,23 @@ Hiring Needs:
 ${formState.hiringNeeds}
         `.trim();
 
-        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        window.location.href = mailtoLink;
-        setSubmitted(true);
+        const whatsappUrl = `https://wa.me/919354203405?text=${encodeURIComponent(message)}`;
+
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+            setStatus('success');
+        }, 500);
     };
 
-    if (submitted) {
+
+    if (status === 'success') {
         return (
             <section id="partner-page" className="py-20 bg-brand-light min-h-screen">
                 <div className="container mx-auto px-6 text-center">
                     <div className="max-w-2xl mx-auto bg-white p-12 rounded-lg shadow-xl animate-fade-in">
                         <h2 className="font-serif text-3xl font-bold text-brand-gold mb-4">Thank You!</h2>
                         <p className="text-lg text-gray-700 mb-8">
-                            Your email client should now be open with your inquiry details. Please review and send the email to complete the process. We look forward to connecting with you!
+                            Your partnership inquiry is ready to be sent. Please click 'Send' in WhatsApp to finalize your submission. We look forward to the possibility of working together!
                         </p>
                         <button
                             onClick={onBack}
@@ -94,33 +130,37 @@ ${formState.hiringNeeds}
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} noValidate className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="companyName" className="block text-sm font-bold text-brand-dark mb-2">Company Name</label>
-                                <input type="text" id="companyName" name="companyName" value={formState.companyName} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="companyName" name="companyName" value={formState.companyName} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.companyName ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.companyName && <p className="text-red-500 text-xs mt-1">{errors.companyName}</p>}
                             </div>
                              <div>
                                 <label htmlFor="companyWebsite" className="block text-sm font-bold text-brand-dark mb-2">Company Website</label>
-                                <input type="url" id="companyWebsite" name="companyWebsite" value={formState.companyWebsite} placeholder="https://example.com" required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="companyWebsite" name="companyWebsite" value={formState.companyWebsite} placeholder="www.example.com" required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.companyWebsite ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.companyWebsite && <p className="text-red-500 text-xs mt-1">{errors.companyWebsite}</p>}
                             </div>
                         </div>
 
                          <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="contactName" className="block text-sm font-bold text-brand-dark mb-2">Contact Name</label>
-                                <input type="text" id="contactName" name="contactName" value={formState.contactName} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="contactName" name="contactName" value={formState.contactName} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.contactName ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.contactName && <p className="text-red-500 text-xs mt-1">{errors.contactName}</p>}
                             </div>
                              <div>
                                 <label htmlFor="contactEmail" className="block text-sm font-bold text-brand-dark mb-2">Contact Email</label>
-                                <input type="email" id="contactEmail" name="contactEmail" value={formState.contactEmail} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="email" id="contactEmail" name="contactEmail" value={formState.contactEmail} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.contactEmail ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.contactEmail && <p className="text-red-500 text-xs mt-1">{errors.contactEmail}</p>}
                             </div>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
                              <div>
                                 <label htmlFor="companySize" className="block text-sm font-bold text-brand-dark mb-2">Company Size</label>
-                                <select id="companySize" name="companySize" value={formState.companySize} onChange={handleChange} required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition">
+                                <select id="companySize" name="companySize" value={formState.companySize} onChange={handleChange} required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.companySize ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}>
                                     <option value="" disabled>Select size...</option>
                                     <option value="1-10">1-10 employees</option>
                                     <option value="11-50">11-50 employees</option>
@@ -128,22 +168,29 @@ ${formState.hiringNeeds}
                                     <option value="201-1000">201-1000 employees</option>
                                     <option value="1000+">1000+ employees</option>
                                 </select>
+                                {errors.companySize && <p className="text-red-500 text-xs mt-1">{errors.companySize}</p>}
                             </div>
                             <div>
                                 <label htmlFor="industry" className="block text-sm font-bold text-brand-dark mb-2">Industry</label>
-                                <input type="text" id="industry" name="industry" value={formState.industry} onChange={handleChange} placeholder="e.g., Technology, Healthcare" required className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"/>
+                                <input type="text" id="industry" name="industry" value={formState.industry} onChange={handleChange} placeholder="e.g., Technology, Healthcare" required className={`w-full p-3 bg-gray-50 rounded-md border ${errors.industry ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}/>
+                                {errors.industry && <p className="text-red-500 text-xs mt-1">{errors.industry}</p>}
                             </div>
                         </div>
 
                         <div>
                             <label htmlFor="hiringNeeds" className="block text-sm font-bold text-brand-dark mb-2">Describe Your Hiring Needs</label>
-                            <textarea id="hiringNeeds" name="hiringNeeds" rows={5} value={formState.hiringNeeds} onChange={handleChange} required placeholder="Tell us about the roles you're looking to fill, key skills you're seeking, and any other relevant details." className="w-full p-3 bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-gold transition"></textarea>
+                            <textarea id="hiringNeeds" name="hiringNeeds" rows={5} value={formState.hiringNeeds} onChange={handleChange} required placeholder="Tell us about the roles you're looking to fill, key skills you're seeking, and any other relevant details." className={`w-full p-3 bg-gray-50 rounded-md border ${errors.hiringNeeds ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-brand-gold transition`}></textarea>
+                            {errors.hiringNeeds && <p className="text-red-500 text-xs mt-1">{errors.hiringNeeds}</p>}
                         </div>
                         
                         <div className="text-center pt-4">
-                            <button type="submit" className="bg-brand-gold text-white font-bold py-3 px-12 rounded-full hover:bg-opacity-90 transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto gap-2">
-                                <BriefcaseIcon className="w-5 h-5" />
-                                Submit Partnership Request
+                            <button type="submit" disabled={status === 'loading'} className="bg-green-500 text-white font-bold py-3 px-12 rounded-full hover:bg-green-600 transition duration-300 transform hover:scale-105 flex items-center justify-center mx-auto gap-2 disabled:bg-gray-400">
+                                 {status === 'loading' ? 'Preparing...' : (
+                                    <>
+                                        <WhatsAppIcon className="w-5 h-5" />
+                                        Submit via WhatsApp
+                                    </>
+                                )}
                             </button>
                         </div>
                     </form>

@@ -9,6 +9,7 @@ import { useAnimateOnScroll } from '../hooks/useAnimateOnScroll';
 
 interface JobSeekerServicesProps {
     onServiceClick: (serviceTitle: string) => void;
+    onApplyClick: () => void;
 }
 
 const servicesData = [
@@ -54,16 +55,8 @@ const ServiceCard: React.FC<{ service: typeof servicesData[0] }> = ({ service })
     </div>
 );
 
-const JobSeekerServices: React.FC<JobSeekerServicesProps> = ({ onServiceClick }) => {
+const JobSeekerServices: React.FC<JobSeekerServicesProps> = ({ onServiceClick, onApplyClick }) => {
   const [titleRef, isTitleVisible] = useAnimateOnScroll<HTMLDivElement>();
-    
-  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section id="job-seeker-services" className="py-20 bg-white overflow-hidden">
@@ -107,13 +100,12 @@ const JobSeekerServices: React.FC<JobSeekerServicesProps> = ({ onServiceClick })
         </div>
 
         <div className="text-center mt-16">
-            <a 
-                href="#contact"
-                onClick={handleContactClick}
+            <button 
+                onClick={onApplyClick}
                 className="bg-brand-gold hover:bg-opacity-90 text-white font-bold py-3 px-10 rounded-full transition duration-300 ease-in-out transform hover:scale-105 inline-block"
             >
-                Get in Touch to Learn More
-            </a>
+                Submit Your Profile
+            </button>
         </div>
       </div>
     </section>
